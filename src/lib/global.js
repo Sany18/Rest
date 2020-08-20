@@ -1,5 +1,6 @@
 // document.body.contentEditable = true
 
+/* import all from folder */
 // const importAll = f => f.keys().forEach(f)
 //       importAll(require.context('./libs', false, /\.(js)$/))
 

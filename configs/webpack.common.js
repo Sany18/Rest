@@ -4,6 +4,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const fs = require('fs')
 
+const workDir = path.resolve(__dirname, '../src')
+
 module.exports = {
   mode: 'development',
   watch: true,
@@ -19,17 +21,16 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', 'css', 'scss'],
     alias: {
-      src: path.resolve(__dirname, '../src/'),
-      ...fs.readdirSync(path.resolve(__dirname, '../src'), { withFileTypes: true })
+      src: workDir,
+      ...fs.readdirSync(workDir, { withFileTypes: true })
            .filter(dirent => dirent.isDirectory())
-           .reduce((acc, file) => ({ ...acc, [file.name]: path.join(__dirname, '../src', file.name) }), {})
+           .reduce((acc, file) => ({ ...acc, [file.name]: path.join(workDir, file.name) }), {})
     }
   },
   module: {
     rules: [
       // { test: /\.js$/, exclude: /node_modules/, use: { loader: 'babel-loader' } },
-      // { test: /\.css$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: ['css-loader'] }) },
-      // { test: /\.scss$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: ['css-loader', 'sass-loader'] }) },
+      { test: /\.s[ac]ss$/i, use: [ 'style-loader', 'css-loader', 'sass-loader'] },
       // { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader?name=./font/[name].[ext]' },
       // { test: /\.(jpg|png)$/, loader: 'file-loader?name=./image/[name].[ext]' }
     ],
