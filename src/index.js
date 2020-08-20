@@ -1,4 +1,6 @@
 import './imports'
+import Floor from 'components/floor'
+import Player from 'components/player'
 
 const clock = new THREE.Clock()
 const scene = new THREE.Scene()
@@ -8,8 +10,8 @@ const renderer = new THREE.WebGLRenderer({ antialias: false })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.shadowMap.enabled = true
 renderer.shadowMapSoft = true
-renderer.shadowCameraNear = 3
-renderer.shadowCameraFar = 1000
+renderer.shadowCameraNear = 1
+renderer.shadowCameraFar = camera.far
 renderer.shadowCameraFov = 50
 renderer.shadowMapBias = 0.0039
 renderer.shadowMapDarkness = .5
@@ -24,10 +26,18 @@ window.addEventListener('resize', () => {
   // composer.setSize(window.innerWidth, window.innerHeight)
 }, false)
 
+
+Floor(scene)
+const player = new Player(camera, scene)
+
+const action = () => {
+  player.control()
+}
+
 const animate = (time, delta = clock.getDelta()) => {
+  action()
   renderer.render(scene, camera)
   // composer.render(delta)
   // scene.simulate()
-
   requestAnimationFrame(animate)
 }; animate()
