@@ -1,10 +1,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const fs = require('fs')
 
 const workDir = path.resolve(__dirname, '../src')
+const dist = path.resolve(__dirname, '../dist')
 
 module.exports = {
   mode: 'development',
@@ -16,7 +17,7 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, '../dist')
+    path: dist
   },
   resolve: {
     extensions: ['.js', '.json', 'css', 'scss'],
@@ -38,8 +39,13 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src/index.html'),
+      template: path.join(workDir, 'index.html'),
       cache: false
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: path.join(workDir, 'public'), to: dist },
+      ],
     }),
   ]
 }

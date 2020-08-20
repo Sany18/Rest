@@ -5,8 +5,7 @@ const config = {
 }
 
 export default class Player {
-  constructor(camera, scene, Physijs) {
-    this.Physijs = Physijs
+  constructor(camera, scene) {
     this.camera = camera
     this.scene = scene
     this.body = this.createPlayerModel()
@@ -57,6 +56,8 @@ export default class Player {
       this.body.__dirtyRotation = true
       this.body.translateX(this.velocity.x * delta)
       this.body.translateZ(this.velocity.z * delta)
+
+      console.log(this.canJump)
     }
   }
 
@@ -90,18 +91,15 @@ export default class Player {
   createPlayerModel = () => {
     let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 2.5)
     let boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 1 })
-    // let body = new this.Physijs.BoxMesh(boxGeometry, boxMaterial, config.yourMass)
-    let body = new THREE.Mesh(boxGeometry, boxMaterial, config.yourMass)
+    let body = new Physijs.BoxMesh(boxGeometry, boxMaterial, config.yourMass)
 
     body.castShadow = true
     body.receiveShadow = true
     body.position.x = 0
     body.position.z = -50
     body.position.y = 5.1
-    body.name = 'realPlayer'
-    body.addEventListener('ready', () => {
-      body.setAngularFactor(new THREE.Vector3(0, 0, 0))
-    })
+    body.name = 'me'
+    body.addEventListener('ready', () => body.setAngularFactor(new THREE.Vector3(0, 0, 0)))
 
     body.add(this.camera)
     this.scene.add(body)
@@ -153,34 +151,28 @@ export default class Player {
     }
   }
 
-  // blocker = event => {
-  //   if (event.target.id == 'menu-button') {
-  //     console.log('Menu...')
-  //   } else {
-  //     document.pointerLockElement
-  //       ? document.exitPointerLock()
-  //       : document.body.requestPointerLock()
-  //   }
-  // }
+  blocker = () => {
+    document.pointerLockElement ? document.exitPointerLock() : document.body.requestPointerLock()
+  }
 
-  // pointerlockchange = () => {
-  //   this.moveForward = this.moveBackward = this.moveLeft = this.moveRight = this.canJump = false
-  //   document.getElementById('blocker').style.display = document.pointerLockElement ? 'none' : 'flex'
-  // }
+  pointerlockchange = () => {
+    this.moveForward = this.moveBackward = this.moveLeft = this.moveRight = this.canJump = false
+    document.getElementById('blocker').style.display = document.pointerLockElement ? 'none' : 'flex'
+  }
 
   connect = () => {
     document.addEventListener('mousemove', this.onMouseMove, false)
     document.addEventListener('keydown', this.keydown, false)
     document.addEventListener('keyup', this.keyup, false)
-    // document.addEventListener('pointerlockchange', this.pointerlockchange)
-    // document.getElementById('blocker').addEventListener('click', this.blocker, false)
+    document.addEventListener('pointerlockchange', this.pointerlockchange)
+    document.getElementById('blocker').addEventListener('click', this.blocker, false)
   }
 
   disconnect = () => {
     document.removeEventListener('mousemove', this.onMouseMove, false)
     document.removeEventListener('keydown', this.keydown, false)
     document.removeEventListener('keyup', this.keyup, false)
-    // document.removeEventListener('pointerlockchange', this.pointerlockchange)
-    // document.getElementById('blocker').removeEventListener('click', this.blocker, false)
+    document.removeEventListener('pointerlockchange', this.pointerlockchange)
+    document.getElementById('blocker').removeEventListener('click', this.blocker, false)
   }
 }
