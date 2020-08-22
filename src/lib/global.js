@@ -1,27 +1,6 @@
-// document.body.contentEditable = true
-
 /* import all from folder */
 // const importAll = f => f.keys().forEach(f)
 //       importAll(require.context('./libs', false, /\.(js)$/))
-
-Math.randInt = (from, to) => Math.round(to
-  ? from + Math.random() * (to - from)
-  : Math.random() * from
-)
-
-Math.randIntBetweenRanges = (...ranges) => {
-  const range = ranges[window.randInt(ranges.length - 1)]
-
-  return window.randInt(range[0], range[1])
-}
-
-// add fileSize property to Number
-Object.defineProperty(
-  Number.prototype, 'fileSize', { value: function(a, b, c, d) {
-  return (a=a?[1e3,'k','B']:[1024,'K','iB'],b=Math,c=b.log,
-  d=c(this)/c(a[0])|0,this/b.pow(a[0],d)).toFixed(2)+' '+(d?(
-  a[1]+'MGTPEZY')[--d]+a[2]:'Bytes')},writable:false,enumerable:false}
-)
 
 const greeting = () => {
   let terminalWidth = 250
@@ -57,3 +36,22 @@ const greeting = () => {
     }, factor * 500)
   }; if (Math.random() < launchChance) greeting()
 }; greeting()
+
+Math.randInt = (from, to) => Math.round(to
+  ? from + Math.random() * (to - from)
+  : Math.random() * from
+)
+
+Math.randIntBetweenRanges = (...ranges) => {
+  const range = ranges[window.randInt(ranges.length - 1)]
+
+  return window.randInt(range[0], range[1])
+}
+
+// add fileSize property to Number
+Object.defineProperty(
+  Number.prototype, 'fileSize', { value: function(a, b, c, d) {
+  return (a=a?[1e3,'k','B']:[1024,'K','iB'],b=Math,c=b.log,
+  d=c(this)/c(a[0])|0,this/b.pow(a[0],d)).toFixed(2)+' '+(d?(
+  a[1]+'MGTPEZY')[--d]+a[2]:'Bytes')},writable:false,enumerable:false}
+)

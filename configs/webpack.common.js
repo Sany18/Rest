@@ -45,6 +45,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: path.join(workDir, 'public'), to: dist },
+        { from: path.join(workDir, 'assets', 'textures'), to: dist + '/textures'  },
       ],
     }),
   ]

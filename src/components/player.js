@@ -22,7 +22,6 @@ export default class Player {
   rotationLeft = false
   canJump = false
   crouch = false
-  canJumpAgain = true
 
   clock = new THREE.Clock()
   velocity = new THREE.Vector3()
@@ -46,18 +45,14 @@ export default class Player {
         this.velocity.z -= this.direction.z * config.moveSpeed * 5 * delta }
       if (this.moveLeft || this.moveRight) {
         this.velocity.x -= this.direction.x * config.moveSpeed * 5 * delta }
-      if (this.body._physijs.touches.length != 0 && this.canJump) {
-        this.body.applyCentralImpulse(this.jumpHeight)
-        this.canJump = false }
+      // if (this.body._physijs.touches.length != 0 && this.canJump) {
+      //   this.body.applyCentralImpulse(this.jumpHeight)
+      //   this.canJump = false }
       if (this.rotationLeft) { this.body.rotateOnAxis(this.vectorX1, 0.04) }
       if (this.rotationRight) { this.body.rotateOnAxis(this.vectorX1, -0.04) }
 
-      this.body.__dirtyPosition = true
-      this.body.__dirtyRotation = true
       this.body.translateX(this.velocity.x * delta)
       this.body.translateZ(this.velocity.z * delta)
-
-      console.log(this.canJump)
     }
   }
 
@@ -91,12 +86,12 @@ export default class Player {
   createPlayerModel = () => {
     let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 2.5)
     let boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 1 })
-    let body = new Physijs.BoxMesh(boxGeometry, boxMaterial, config.yourMass)
+    let body = new THREE.Mesh(boxGeometry, boxMaterial, config.yourMass)
 
     body.castShadow = true
     body.receiveShadow = true
     body.position.x = 0
-    body.position.z = -50
+    body.position.z = 50
     body.position.y = 5.1
     body.name = 'me'
     body.addEventListener('ready', () => body.setAngularFactor(new THREE.Vector3(0, 0, 0)))
