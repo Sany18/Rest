@@ -68,7 +68,6 @@ export default class Player {
 
     this.camera.quaternion.setFromEuler(this.eulerX)
     this.body.quaternion.setFromEuler(this.eulerY)
-    this.body.__dirtyRotation = true
 
     this.euler.y = this.eulerY.y
     this.euler.x = this.eulerX.x
@@ -84,7 +83,7 @@ export default class Player {
   }
 
   createPlayerModel = () => {
-    let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 2.5)
+    let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 30)
     let boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 1 })
     let body = new THREE.Mesh(boxGeometry, boxMaterial, config.yourMass)
 
@@ -95,6 +94,7 @@ export default class Player {
     body.position.y = 5.1
     body.name = 'me'
     body.addEventListener('ready', () => body.setAngularFactor(new THREE.Vector3(0, 0, 0)))
+    body.body = scene.world.add({ size:[5, 10, 30], pos:[0, 50, 5.1] })
 
     body.add(this.camera)
     this.scene.add(body)
@@ -105,7 +105,7 @@ export default class Player {
   }
 
   crosshair = () => {
-    let size = .002
+    let size = .001
     let geometry = new THREE.Geometry()
     let material = new THREE.LineBasicMaterial({ color: 'white' })
     geometry.vertices.push(

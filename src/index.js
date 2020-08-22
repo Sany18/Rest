@@ -8,9 +8,11 @@ const clock = new THREE.Clock()
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
 
+window.scene = scene // dev
+
 /* prysics */
-const world = new OIMO.World({ 
-  timestep: 1/60, 
+const world = scene.world = new OIMO.World({ 
+  timestep: 1 / 60, 
   iterations: 8, 
   broadphase: 2, // 1 brute force, 2 sweep and prune, 3 volume tree
   worldscale: 1, // scale full world 
@@ -50,40 +52,27 @@ Floor(scene)
 DirectionLight(scene)
 const player = new Player(camera, scene)
 
-
 const geo = new THREE.CubeGeometry(5, 5, 5)
 const mat = new THREE.MeshLambertMaterial({ color: 0x888888 })
 
-let coubes = 1
+let coubes = 50
 const createCube = () => {
   setTimeout(() => {
-    const box = new THREE.Mesh(geo, mat)
-    box.position.y = 10
-    scene.add(box)
+    const mesh = new THREE.Mesh(geo, mat)
+    mesh.castShadow = true
+    mesh.body = scene.world.add({ size:[5, 5, 5], pos:[0, 20, 0], move: true })
+    mesh.name = '1'
+    scene.add(mesh)
+
     coubes -= 1
     if (coubes >= 0) createCube()
-  }, 200)
+  }, 500)
 }; createCube()
 
-
-
-
-var body = world.add({ 
-  type:'sphere', // type of shape : sphere, box, cylinder 
-  size:[1,1,1], // size of shape
-  pos:[0,0,0], // start position in degree
-  rot:[0,0,90], // start rotation in degree
-  move:true, // dynamic or statique
-  density: 1,
-  friction: 0.2,
-  restitution: 0.2,
-  belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-  collidesWith: 0xffffffff // The bits of the collision groups with which the shape collides.
-});
-
-
-
-
+scene.fog = new THREE.Fog(0x000000)
+scene.background = new THREE.CubeTextureLoader().load(
+  Array(6).fill().map((_, i) => `/textures/skybox-space-2/${i + 1}.png`)
+)
 
 /* action */
 const stats = new Stats
@@ -93,8 +82,25 @@ const action = () => {
 }
 
 const animate = (time, delta = clock.getDelta()) => {
-  action()
   world.step()
+
+  Object.values(scene.children).forEach(el => {
+    if (el.body && !el.body.sleeping) {
+      switch(el.name) {
+        case 'me':
+          el.body.setPosition(el.position)
+          el.body.setQuaternion(el.quaternion)
+          el.body.updatePosition(1)
+        break;
+        case '1':
+          el.position.copy(el.body.getPosition())
+          el.quaternion.copy(el.body.getQuaternion())
+        break;
+      }
+    }
+  })
+
+  action()
   composer.render(delta)
   requestAnimationFrame(animate)
 }; animate()

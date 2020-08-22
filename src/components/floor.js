@@ -1,8 +1,8 @@
 export default scene => {
   const state = {
-    planeSize: 10,
+    planeSize: 100,
     scale: 10,
-    repeats: 1
+    repeats: 10
   }
 
   const texture = THREE.loadTexture('floorSquere.png')
@@ -19,6 +19,8 @@ export default scene => {
   mesh.receiveShadow = true
   mesh.scale.set(state.scale, state.scale, state.scale)
   mesh.rotation.x = Math.PI * -.5
+
+  mesh.body = scene.world.add({ size:[500, 10, 500], pos:[0, -5, 0] })
 
   scene.add(mesh)
 
