@@ -83,25 +83,25 @@ export default class Player {
   }
 
   createPlayerModel = () => {
-    let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 30)
+    let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 5)
     let boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 1 })
-    let body = new THREE.Mesh(boxGeometry, boxMaterial, config.yourMass)
+    let mesh = new THREE.Mesh(boxGeometry, boxMaterial, config.yourMass)
 
-    body.castShadow = true
-    body.receiveShadow = true
-    body.position.x = 0
-    body.position.z = 50
-    body.position.y = 5.1
-    body.name = 'me'
-    body.addEventListener('ready', () => body.setAngularFactor(new THREE.Vector3(0, 0, 0)))
-    body.body = scene.world.add({ size:[5, 10, 30], pos:[0, 50, 5.1] })
+    mesh.castShadow = true
+    mesh.receiveShadow = true
+    mesh.position.x = 0
+    mesh.position.z = 50
+    mesh.position.y = 5.1
+    mesh.name = 'me'
+    mesh.addEventListener('ready', () => mesh.setAngularFactor(new THREE.Vector3(0, 0, 0)))
+    mesh.body = scene.world.add({ size:[5, 10, 5], pos:[0, 50, 5.1] })
 
-    body.add(this.camera)
-    this.scene.add(body)
-    this.camera.position.set(0, 7.5, -2.5)
+    mesh.add(this.camera)
+    this.scene.add(mesh)
+    this.camera.position.set(0, 7.5, 0)
     this.camera.add(this.crosshair())
 
-    return body
+    return mesh
   }
 
   crosshair = () => {

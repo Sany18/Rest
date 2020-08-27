@@ -1,5 +1,5 @@
+require('./configs/config.js')
 const express = require('express')
-const config = require('./configs/config.js')
 const path = require('path')
 const http = require('http')
 const WebSocketServer = require('ws').Server
@@ -7,6 +7,8 @@ const WebSocketServer = require('ws').Server
 const root = __dirname + '/dist'
 const server = new express()
 let userIdCounter = 0
+
+console.table(global.config)
 
 /* http server */
 server.use(express.static(root))
@@ -16,7 +18,7 @@ server.get('*', (req, res) => {
 })
 
 const httpServer = http.createServer(server)
-httpServer.listen(config.serverPort)
+httpServer.listen(global.config.serverPort)
 
 /* ws server */
 const wsServer = new WebSocketServer({ server: httpServer })

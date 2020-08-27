@@ -33,7 +33,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, use: [{ loader: 'babel-loader' }] },
       { test: /\.s[ac]ss$/i, use: [ 'style-loader', 'css-loader', 'sass-loader'] },
       // { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader?name=./font/[name].[ext]' },
-      { test: /\.(jpg|png)$/, loader: 'file-loader?name=./image/[name].[ext]' }
+      // { test: /\.(jpg|png)$/, loader: 'file-loader?name=./image/[name].[ext]' }
     ],
   },
   plugins: [

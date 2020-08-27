@@ -48,6 +48,7 @@ window.addEventListener('resize', () => {
 }, false)
 
 /* objects */
+const stats = new Stats
 Floor(scene)
 DirectionLight(scene)
 const player = new Player(camera, scene)
@@ -66,23 +67,19 @@ const createCube = () => {
 
     coubes -= 1
     if (coubes >= 0) createCube()
-  }, 500)
+  }, 200)
 }; createCube()
 
-scene.fog = new THREE.Fog(0x000000)
+scene.fog = new THREE.Fog(0xffffff)
+const skyboxNames = ['ft', 'bk', 'up', 'dn', 'rt', 'lf']
 scene.background = new THREE.CubeTextureLoader().load(
-  Array(6).fill().map((_, i) => `/textures/skybox-space-2/${i + 1}.png`)
+  Array(6).fill().map((_, i) => `/textures/skybox-clouds/${skyboxNames[i]}.jpg`)
 )
 
 /* action */
-const stats = new Stats
 const action = () => {
   player.control()
   stats.showFps().showMemory()
-}
-
-const animate = (time, delta = clock.getDelta()) => {
-  world.step()
 
   Object.values(scene.children).forEach(el => {
     if (el.body && !el.body.sleeping) {
@@ -99,7 +96,10 @@ const animate = (time, delta = clock.getDelta()) => {
       }
     }
   })
+}
 
+const animate = (time, delta = clock.getDelta()) => {
+  world.step()
   action()
   composer.render(delta)
   requestAnimationFrame(animate)

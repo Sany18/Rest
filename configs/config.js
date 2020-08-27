@@ -8,5 +8,5 @@ try { if (window) {
 
 try { if (global) {
   config.serverPort = process.env.PORT || config.serverPort
-  module.exports = config
+  global.config = config
 }} catch {}
