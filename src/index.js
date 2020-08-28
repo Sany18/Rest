@@ -3,6 +3,7 @@ import Stats from 'lib/stats'
 import DirectionLight from 'components/directionLight'
 import Floor from 'components/floor'
 import Player from 'components/player'
+import Environment from 'components/environment'
 
 const clock = new THREE.Clock()
 const scene = new THREE.Scene()
@@ -51,17 +52,18 @@ window.addEventListener('resize', () => {
 const stats = new Stats
 Floor(scene)
 DirectionLight(scene)
+Environment(scene)
 const player = new Player(camera, scene)
 
 const geo = new THREE.CubeGeometry(5, 5, 5)
-const mat = new THREE.MeshLambertMaterial({ color: 0x888888 })
-
-let coubes = 0
+const texture = THREE.loadTexture('woodBox.png')
+const mat = new THREE.MeshLambertMaterial({ map: texture })
+let coubes = 20
 const createCube = () => {
   setTimeout(() => {
     const mesh = new THREE.Mesh(geo, mat)
     mesh.castShadow = true
-    mesh.body = scene.world.add({ size:[5, 5, 5], pos:[0, 5, 0], move: false })
+    mesh.body = scene.world.add({ size:[5, 5, 5], pos:[5, 5, 0], move: true })
     mesh.name = 'box'
     window.coube = mesh
     scene.add(mesh)
@@ -71,7 +73,7 @@ const createCube = () => {
   }, 200)
 }; createCube()
 
-// scene.fog = new THREE.Fog(0xffffff)
+scene.fog = new THREE.Fog(0xffffff)
 const skyboxNames = ['ft', 'bk', 'up', 'dn', 'rt', 'lf']
 scene.background = new THREE.CubeTextureLoader().load(
   skyboxNames.map(name => `/textures/skybox-clouds/${name}.jpg`)
@@ -95,7 +97,7 @@ const action = () => {
   stats.showFps().showMemory()
 
   Object.values(scene.children).forEach(el => {
-    if (el.body && !el.body.sleeping && el.name != 'static') {
+    if (el.body && !el.body.sleeping && !el.static) {
       el.position.copy(el.body.getPosition())
       el.quaternion.copy(el.body.getQuaternion())
     }

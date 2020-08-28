@@ -1,5 +1,5 @@
 const config = {
-  jumpHeight: 100,
+  jumpHeight: 40,
   speed: 35,
   mass: 1
 }
@@ -54,7 +54,7 @@ export default class Player {
       if (this.jump && this.canJump) {
         this.player.body.linearVelocity.y = config.jumpHeight
         this.canJump = false
-        setTimeout(_ => this.canJump = true, 1200)
+        setTimeout(_ => this.canJump = true, 500)
       }
     }
   }

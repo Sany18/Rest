@@ -1,16 +1,14 @@
-export default (scene, camera) => {
+export default (scene) => {
   const state = {
     position: { x: 0, y: 200, z: -200 },
     size: 300,
-    // color: 0xfa880f
     color: 0xffffff,
     shadowResolution: 2048
   }
   const light = new THREE.DirectionalLight(state.color, .5)
-  const backLight = new THREE.DirectionalLight(state.color, .5)
+  const ambientlight = new THREE.AmbientLight(0x404040)
 
   light.position.set(state.position.x, state.position.y, state.position.z)
-  backLight.position.set(-state.position.x, state.position.y, -state.position.z)
   light.target.position.set(0, 0, 0)
 
   light.castShadow = true
@@ -22,12 +20,10 @@ export default (scene, camera) => {
   light.shadow.mapSize.height = state.shadowResolution
 
 //     let helper = new THREE.CameraHelper(light.shadow.camera)
-//
-//     helper.name = 'directionLightHelper'
 //     scene.add(helper)
 
   scene.add(light)
-  scene.add(backLight)
+  scene.add(ambientlight)
 
   return light
 }
