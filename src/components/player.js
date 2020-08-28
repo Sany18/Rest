@@ -133,7 +133,7 @@ export default class Player {
     }
   }
 
-  blocker = () => {
+  displayBlocker = () => {
     document.pointerLockElement ? document.exitPointerLock() : document.body.requestPointerLock()
   }
 
@@ -147,7 +147,7 @@ export default class Player {
     document.addEventListener('keydown', this.keydown, false)
     document.addEventListener('keyup', this.keyup, false)
     document.addEventListener('pointerlockchange', this.pointerlockchange)
-    document.getElementById('blocker').addEventListener('click', this.blocker, false)
+    document.getElementById('blocker').addEventListener('click', this.displayBlocker, false)
   }
 
   disconnect = () => {

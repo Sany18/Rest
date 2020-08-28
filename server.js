@@ -2,26 +2,29 @@ require('./configs/config.js')
 const express = require('express')
 const path = require('path')
 const http = require('http')
-const WebSocketServer = require('ws').Server
+const webSocketServer = require('ws').Server
+const app = new express()
 
 const root = __dirname + '/dist'
-const server = new express()
 let userIdCounter = 0
 
+// logs
 console.table(global.config)
 
 /* http server */
-server.use(express.static(root))
-server.get('*', (req, res) => {
+app.use(express.static(root))
+app.get('*', (req, res) => {
+  // logs
   console.log(req.method, req.url, req.query)
+
   res.sendFile(path.join(root + '/index.html'))
 })
 
-const httpServer = http.createServer(server)
+const httpServer = http.createServer(app)
 httpServer.listen(global.config.serverPort)
 
 /* ws server */
-const wsServer = new WebSocketServer({ server: httpServer })
+const wsServer = new webSocketServer({ server: httpServer })
 
 wsServer.on('connection', ws => {
   ws.on('message', runCommands)

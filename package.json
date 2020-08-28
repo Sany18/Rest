@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm-run-all --parallel serv:dev webpack:dev --silent",
     "serv:dev": "node server.js",
-    "webpack:dev": "webpack --config ./configs/webpack.common.js"
+    "webpack:dev": "webpack --config ./configs/webpack.common.js",
+    "deploy": "npx shipit production deploy"
   },
   "keywords": [],
   "author": "Hoxz | alex.t@miltestep.io",
@@ -33,6 +34,8 @@
     "sass": "^1.26.10",
     "sass-loader": "^9.0.3",
     "script-ext-html-webpack-plugin": "^2.1.4",
+    "shipit-cli": "^5.3.0",
+    "shipit-deploy": "^5.3.0",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
