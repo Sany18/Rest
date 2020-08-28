@@ -1,58 +1,61 @@
 const config = {
-  jumpHeight: 180,
-  moveSpeed: 100,
-  yourMass: 1
+  jumpHeight: 100,
+  speed: 35,
+  mass: 1
 }
 
 export default class Player {
   constructor(camera, scene) {
     this.camera = camera
     this.scene = scene
-    this.body = this.createPlayerModel()
+    this.player = this.createPlayerModel()
     this.connect()
+    window.player = this.player
   }
 
   /*get*/
-  jumpHeight = new THREE.Vector3(0, config.jumpHeight, 0)
   moveForward = false
   moveBackward = false
   moveLeft = false
   moveRight = false
   rotationRight = false
   rotationLeft = false
-  canJump = false
+  jump = false
   crouch = false
+  canJump = true
 
-  clock = new THREE.Clock()
-  velocity = new THREE.Vector3()
   direction = new THREE.Vector3()
-  vectorX1 = new THREE.Vector3(0, 1, 0)
+  nullVector = new THREE.Vector3(0, 0, 0)
+  mainDirectionVector = new THREE.Vector3(0, 0, 1)
+  quaternion = new THREE.Quaternion()
 
   eulerX = new THREE.Euler(0, 0, 0, 'YXZ')
   eulerY = new THREE.Euler(0, 0, 0, 'YXZ')
-  euler = new THREE.Euler(0, 0, 0, 'YXZ')
-  quaternion = new THREE.Quaternion()
 
-  control = (delta = this.clock.getDelta()) => {
+  control = () => {
     if (document.pointerLockElement) {
-      this.velocity.x -= this.velocity.x * 10.0 * delta
-      this.velocity.z -= this.velocity.z * 10.0 * delta
+      this.player.body.resetQuaternion(this.quaternion.setFromEuler(this.eulerY))
+
+      this.player.body.linearVelocity.x = 0
+      this.player.body.linearVelocity.z = 0
 
       this.direction.z = +this.moveForward - +this.moveBackward
       this.direction.x = +this.moveLeft - +this.moveRight
 
+      let cameraDirection = camera.getWorldDirection(this.nullVector).multiplyScalar(config.speed)
       if (this.moveForward || this.moveBackward) {
-        this.velocity.z -= this.direction.z * config.moveSpeed * 5 * delta }
+        this.player.body.linearVelocity.x += cameraDirection.x * this.direction.z
+        this.player.body.linearVelocity.z += cameraDirection.z * this.direction.z
+      }
       if (this.moveLeft || this.moveRight) {
-        this.velocity.x -= this.direction.x * config.moveSpeed * 5 * delta }
-      // if (this.body._physijs.touches.length != 0 && this.canJump) {
-      //   this.body.applyCentralImpulse(this.jumpHeight)
-      //   this.canJump = false }
-      if (this.rotationLeft) { this.body.rotateOnAxis(this.vectorX1, 0.04) }
-      if (this.rotationRight) { this.body.rotateOnAxis(this.vectorX1, -0.04) }
-
-      this.body.translateX(this.velocity.x * delta)
-      this.body.translateZ(this.velocity.z * delta)
+        this.player.body.linearVelocity.x += cameraDirection.z * this.direction.x
+        this.player.body.linearVelocity.z += -cameraDirection.x * this.direction.x
+      }
+      if (this.jump && this.canJump) {
+        this.player.body.linearVelocity.y = config.jumpHeight
+        this.canJump = false
+        setTimeout(_ => this.canJump = true, 1200)
+      }
     }
   }
 
@@ -67,39 +70,23 @@ export default class Player {
     this.eulerX.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.eulerX.x))
 
     this.camera.quaternion.setFromEuler(this.eulerX)
-    this.body.quaternion.setFromEuler(this.eulerY)
-
-    this.euler.y = this.eulerY.y
-    this.euler.x = this.eulerX.x
-    this.quaternion.setFromEuler(this.euler)
-  }
-
-  jump = () => {
-    if (!this.canJumpAgain) { this.canJump = false; return }
-
-    this.canJump = true
-    this.canJumpAgain = false
-    setTimeout(() => { this.canJumpAgain = true }, 100)
+    this.player.body.resetQuaternion(this.quaternion.setFromEuler(this.eulerY))
   }
 
   createPlayerModel = () => {
     let boxGeometry = new THREE.BoxBufferGeometry(5, 10, 5)
     let boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 1 })
-    let mesh = new THREE.Mesh(boxGeometry, boxMaterial, config.yourMass)
+    let mesh = new THREE.Mesh(boxGeometry, boxMaterial, config.mass)
 
     mesh.castShadow = true
     mesh.receiveShadow = true
-    mesh.position.x = 0
-    mesh.position.z = 50
-    mesh.position.y = 5.1
     mesh.name = 'me'
-    mesh.addEventListener('ready', () => mesh.setAngularFactor(new THREE.Vector3(0, 0, 0)))
-    mesh.body = scene.world.add({ size:[5, 10, 5], pos:[0, 50, 5.1] })
+    mesh.body = scene.world.add({ size: [5, 10, 5], pos: [0, 20, 50], move: true })
 
+    this.camera.add(this.crosshair())
+    this.camera.position.set(0, 7.5, 0)
     mesh.add(this.camera)
     this.scene.add(mesh)
-    this.camera.position.set(0, 7.5, 0)
-    this.camera.add(this.crosshair())
 
     return mesh
   }
@@ -129,7 +116,7 @@ export default class Player {
       case 81: this.rotationLeft = true; break;          // Q rotation left
       case 69: this.rotationRight = true; break;         // E rotation right
       case 17: this.crouch = true; break;                // Ctrl crouch
-      case 32: this.jump(); break;                       // Space jump
+      case 32: this.jump = true; break;                  // Space jump
     }
   }
 
@@ -142,7 +129,7 @@ export default class Player {
       case 81: this.rotationLeft = false; break;          // rotation left
       case 69: this.rotationRight = false; break;         // rotation right
       case 17: this.crouch = false; break;                // crouch
-      case 32: this.canJump = false; break;               // jump
+      case 32: this.jump = false; break;                  // jump
     }
   }
 
@@ -151,7 +138,7 @@ export default class Player {
   }
 
   pointerlockchange = () => {
-    this.moveForward = this.moveBackward = this.moveLeft = this.moveRight = this.canJump = false
+    this.moveForward = this.moveBackward = this.moveLeft = this.moveRight = this.jump = false
     document.getElementById('blocker').style.display = document.pointerLockElement ? 'none' : 'flex'
   }
 
