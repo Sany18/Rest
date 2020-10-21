@@ -4,8 +4,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm-run-all --parallel serv:dev webpack:dev --silent",
-    "serv:dev": "node server.js",
+    "start": "npm-run-all --parallel server:dev webpack:dev --silent",
+    "server:dev": "nodemon server.js",
     "webpack:dev": "webpack --config ./configs/webpack.common.js",
     "deploy": "npx shipit production deploy"
   },

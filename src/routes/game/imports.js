@@ -1,9 +1,12 @@
 import * as THREE from 'three'
 import * as OIMO from 'oimo'
 import { EffectComposer, RenderPass } from 'postprocessing'
+import template from './template.html.js'
 import 'lib/livereload'
 import 'assets/globalStyles.scss'
 import 'lib/global'
+
+document.write(template)
 
 window.THREE = THREE
 window.OIMO = OIMO

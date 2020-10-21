@@ -10,16 +10,32 @@ module.exports = shipit => {
       keepReleases: 1,
       keepWorkspace: false,
       deleteOnRollback: false,
-      key: '$HOME/.ssh/id_rsa',
+      // key: '$HOME/.ssh/id_rsa.pub',
       shallowClone: true,
       deploy: {
         remoteCopy: {
           copyAsDir: false
-        },
-      },
+        }
+      }
     },
     production: {
       servers: 'root@165.227.158.13'
-    },
+    }
+  })
+
+  shipit.blTask('npm:install', async () => {
+    await shipit.remote(`cd ${shipit.releasePath} && npm i`)
+  })
+
+  shipit.blTask('server:start', async () => {
+    await shipit.remote(`cd ${shipit.config.deployTo}/current && npm start`)
+  })
+
+  shipit.on('updated', () => {
+    shipit.start('npm:install')
+  })
+
+  shipit.on('published', () => {
+    shipit.start('server:start')
   })
 }

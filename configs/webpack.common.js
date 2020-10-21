@@ -13,7 +13,7 @@ module.exports = {
   stats: 'errors-only',
   devtool: 'inline-source-map',
   entry: {
-    app: './src/index.js'
+    app: './src/routes/index.js'
   },
   output: {
     filename: '[name].js',
@@ -39,7 +39,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.join(workDir, 'index.html'),
+      template: path.join(workDir, 'routes/index.html'),
       cache: false
     }),
     new CopyPlugin({
