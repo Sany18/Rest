@@ -1,0 +1,69 @@
+@font-face {
+  font-family: Ubuntu;
+  src: url(assets/fonts/Ubuntu-R.ttf);
+  font-size: 25px;
+}
+
+html {
+  font-family: Ubuntu;
+  background: url(textures/mesh.png);
+  background-size: 100px;
+}
+
+a {
+  color: var(--orange);
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  text-decoration: none;
+  border: solid grey 5px;
+
+  &:hover {
+    letter-spacing: .3rem;
+    color: var(--red);
+  }
+
+  &:active {
+    background-color: var(--yellow);
+  }
+}
+
+button {
+  background: #555;
+  color: white;
+  height: 30px;
+}
+
+.columns {
+  display: flex;
+
+  .column {
+    flex: 1;
+  }
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  height: 40px;
+  width: 100%;
+  background-color: grey;
+  justify-content: space-between;
+  padding: 3px;
+
+  .bottom-bar__block {
+    min-width: 34px;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.clock {
+  width: 85px;
+  color: black;
+  font-size: .8rem;
+}

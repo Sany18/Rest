@@ -7,9 +7,34 @@
   <meta name="description" content="Hoxz | alex.t@milestep.io@gmail.com" />
   <title>Rest</title>
   <style>
+    :root {
+      --yellow: #ffd319;
+      --orange: #ff901f;
+      --red: #ff2975;
+      --pink: #f222ff;
+      --purple: #8c1eff;
+    }
+
+    input:focus, textarea:focus,
+    select:focus, button:focus {
+      outline: none;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: .1s;
+    }
+
     html {
-      background-color: black;
+      background-color: #111;
       color: white;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
     }
   </style>
 </head>

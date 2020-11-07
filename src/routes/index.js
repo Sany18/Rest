@@ -1,3 +1,6 @@
+import 'lib/livereload'
+import 'lib/consoleIgnore'
+
 switch (window.location.pathname) {
   case '/': require('./menu.js'); break
   case '/game': require('./game/index.js'); break

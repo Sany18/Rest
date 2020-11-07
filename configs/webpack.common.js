@@ -30,10 +30,12 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, use: [{ loader: 'babel-loader' }] },
+      { test: /\.m?js$/, exclude: /node_modules/, use: [{ loader: 'babel-loader' }] },
       { test: /\.s[ac]ss$/i, use: [ 'style-loader', 'css-loader', 'sass-loader'] },
-      // { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader?name=./font/[name].[ext]' },
-      // { test: /\.(jpg|png)$/, loader: 'file-loader?name=./image/[name].[ext]' }
+      { test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/, 
+        use: [{ loader: 'file-loader', options: { name: '[name].[ext]', outputPath: 'fonts/' } }]
+      },
+      { test: /\.(jpg|png)$/, loader: 'file-loader?name=./image/[name].[ext]' }
     ],
   },
   plugins: [
