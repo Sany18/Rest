@@ -1,7 +1,7 @@
 import './imports'
 import Stats from 'lib/stats'
-import Player from 'components/player'
-import Environment from 'components/environment'
+import Player from 'routes/game/components/player'
+import Environment from 'routes/game/components/environment'
 
 const clock = new THREE.Clock()
 const scene = new THREE.Scene()

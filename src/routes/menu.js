@@ -5,7 +5,7 @@ const template = `
   <div class="columns">
     <div class="column">
       <a href="/game" class="link can-move">Game</a>
-      <div class="link can-move">Another link</div>
+      <a href="/synthwave" class="link can-move">Synthwave</a>
     </div>
     <div class="column">
 

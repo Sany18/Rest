@@ -43,9 +43,9 @@ Math.randInt = (from, to) => Math.round(to
 )
 
 Math.randIntBetweenRanges = (...ranges) => {
-  const range = ranges[window.randInt(ranges.length - 1)]
+  const range = ranges[Math.randInt(ranges.length - 1)]
 
-  return window.randInt(range[0], range[1])
+  return Math.randInt(range[0], range[1])
 }
 
 // add fileSize property to Number

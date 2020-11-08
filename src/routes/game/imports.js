@@ -3,7 +3,6 @@ import * as OIMO from 'oimo'
 import { EffectComposer, RenderPass } from 'postprocessing'
 import './template'
 import 'assets/game.scss'
-import 'lib/global'
 
 window.THREE = THREE
 window.OIMO = OIMO

@@ -5,8 +5,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm-run-all --parallel server:dev webpack:dev --silent",
+    "build": "PORT=80 npm-run-all --parallel server:prod webpack:prod --silent",
     "server:dev": "nodemon server.js",
+    "server:prod": "node server.js",
     "webpack:dev": "webpack --config ./configs/webpack.common.js",
+    "webpack:prod": "webpack --config ./configs/webpack.prod.js",
     "deploy": "npx shipit production deploy"
   },
   "keywords": [],

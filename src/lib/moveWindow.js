@@ -43,8 +43,8 @@ window.addEventListener('load', () => {
       elements[i].style.left = JSON.parse(storageElem)[0]
       elements[i].style.top = JSON.parse(storageElem)[1]
     } else {
-      elements[i].style.left = '0px'
-      elements[i].style.top = `${i*30}px`
+      elements[i].style.left = '15px'
+      elements[i].style.top = `${15 + i * 70}px`
     }
   }
 
