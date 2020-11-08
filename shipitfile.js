@@ -26,12 +26,8 @@ module.exports = shipit => {
     await shipit.remote(`cd ${shipit.releasePath} && npm i`)
   })
 
-  shipit.blTask('server:stop', async () => {
-    await shipit.remote(`killall -9 node`)
-  })
-
   shipit.blTask('server:start', async () => {
-    await shipit.remote(`cd ${shipit.config.deployTo}/current && npm start`)
+    await shipit.remote(`killall -9 node && cd ${shipit.config.deployTo}/current && npm start`)
   })
 
   shipit.on('updated', () => {
@@ -39,7 +35,6 @@ module.exports = shipit => {
   })
 
   shipit.on('published', () => {
-    shipit.start('server:stop')
     shipit.start('server:start')
   })
 }
