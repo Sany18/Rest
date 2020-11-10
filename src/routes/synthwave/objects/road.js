@@ -11,12 +11,12 @@ export default scene => {
   texture.minFilter = THREE.LinearFilter
   texture.repeat.set(1, state.repeatTexture)
 
-  const material = new THREE.MeshPhongMaterial({ map: texture, envMap: scene.background, combine: THREE.MixOperation, reflectivity: .1, roughness: 0 })
+  const material = new THREE.MeshPhongMaterial({ map: texture, envMap: scene.background, combine: THREE.MixOperation, reflectivity: .1 })
   const geometry = new THREE.PlaneGeometry(state.size, state.repeatTexture)
 
   const plane = new THREE.Mesh(geometry, material)
   plane.rotation.x = -Math.PI / 2
-  plane.position.set(0, .001, -20)
+  plane.position.set(0, .001, 0)
 
   scene.add(plane)
   return texture

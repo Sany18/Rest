@@ -1,11 +1,11 @@
 import * as Textures from '../assets/textures/billboards'
 
-export default (scene, offsetX = 0) => {
+export default (scene, offsetZ = 0) => {
   /* frame */
   const stickGeometry = new THREE.CylinderGeometry(.025, .025, .6)
   const stickMaterial = new THREE.MeshPhongMaterial({ color: 0x383838, shininess: 150 })
   const stick = new THREE.Mesh(stickGeometry, stickMaterial, 0)
-  stick.position.set(-2, .3, offsetX)
+  stick.position.set(-2, .3, offsetZ)
   stick.rotation.y = .2
 
   const stickGeometry2 = new THREE.BoxBufferGeometry(.02, 1, .05)

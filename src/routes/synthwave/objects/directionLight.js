@@ -1,8 +1,8 @@
 export default (scene, camera) => {
   const state = {
-    position: { x: 0, y: 200, z: -200 },
+    position: { x: 0, y: 200, z: 0 },
     size: 300,
-    // color: 0xfa880f
+    // color: 0xfa880f,
     color: 0xffffff,
     shadowResolution: 2048
   }
@@ -21,10 +21,10 @@ export default (scene, camera) => {
   light.shadow.mapSize.width = state.shadowResolution
   light.shadow.mapSize.height = state.shadowResolution
 
-//     let helper = new THREE.CameraHelper(light.shadow.camera)
-//
-//     helper.name = 'directionLightHelper'
-//     scene.add(helper)
+    let helper = new THREE.CameraHelper(light.shadow.camera)
+
+    helper.name = 'directionLightHelper'
+    scene.add(helper)
 
   scene.add(light)
   scene.add(backLight)

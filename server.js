@@ -7,16 +7,34 @@ const app = new express()
 
 const root = __dirname + '/dist'
 let userIdCounter = 0
+const rejectIps = new Set([
+  // '::1'
+])
 
-// logs
+// show port
 console.table(global.config)
+
+function getIp(req) {
+  return (req.headers['x-forwarded-for'] || '').split(',').pop().trim() ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress
+}
+
+function logger(req) {
+  console.log(
+    req.method,
+    getIp(req),
+    req.url,
+    req.query
+  )
+}
 
 /* http server */
 app.use(express.static(root))
 app.get('*', (req, res) => {
-  // logs
-  console.log(req.method, req.url, req.query)
-
+  if (rejectIps.has(getIp(req))) return
+  logger(req)
   res.sendFile(path.join(root + '/index.html'))
 })
 

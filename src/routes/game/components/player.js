@@ -41,7 +41,7 @@ export default class Player {
       this.direction.z = +this.moveForward - +this.moveBackward
       this.direction.x = +this.moveLeft - +this.moveRight
 
-      let cameraDirection = camera.getWorldDirection(this.nullVector).multiplyScalar(config.speed)
+      let cameraDirection = this.camera.getWorldDirection(this.nullVector).multiplyScalar(config.speed)
       if (this.moveForward || this.moveBackward) {
         this.player.body.linearVelocity.x += cameraDirection.x * this.direction.z
         this.player.body.linearVelocity.z += cameraDirection.z * this.direction.z
@@ -80,7 +80,7 @@ export default class Player {
     mesh.castShadow = true
     mesh.receiveShadow = true
     mesh.name = 'me'
-    mesh.body = scene.world.add({ size: [5, 10, 5], pos: [0, 20, 50], move: true })
+    mesh.body = this.scene.world.add({ size: [5, 10, 5], pos: [0, 20, 50], move: true })
 
     this.camera.add(this.crosshair())
     this.camera.position.set(0, 7.5, 0)

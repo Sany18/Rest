@@ -1,8 +1,8 @@
-export default (scene, offsetX = 0) => {
+export default (scene, offsetZ = 0) => {
   const stickGeometry = new THREE.BoxBufferGeometry(.05, 2, .05)
   const stickMaterial = new THREE.MeshPhongMaterial({ color: 'grey' })
   const stick = new THREE.Mesh(stickGeometry, stickMaterial, 0)
-  stick.position.set(1, 0, offsetX)
+  stick.position.set(1, 0, offsetZ)
 
   const stickGeometry2 = new THREE.BoxBufferGeometry(.05, .7, .05)
   const stick2 = new THREE.Mesh(stickGeometry2, stickMaterial, 0)
@@ -21,14 +21,16 @@ export default (scene, offsetX = 0) => {
   stick4.rotation.z = Math.PI * .4
   stick.add(stick4)
 
-  const light = new THREE.PointLight(0xf79328, 1.337, 10)
+  const light = new THREE.PointLight(0xffda85, 1.337, 10)
   light.position.set(-.62, 1.28, 0)
   light.rotation.set(Math.PI * -.5, Math.PI * .1, 0)
+  light.castShadow = true
   stick.add(light)
 
   // const helper = new THREE.CameraHelper(light.shadow.camera)
   // light.add(helper)
 
+  stick.castShadow = true
   stick.name = 'street_light'
   scene.add(stick)
   return stick

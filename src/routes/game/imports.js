@@ -1,13 +1,10 @@
 import * as THREE from 'three'
 import * as OIMO from 'oimo'
-import { EffectComposer, RenderPass } from 'postprocessing'
 import './template'
 import 'assets/game.scss'
 
 window.THREE = THREE
 window.OIMO = OIMO
-window.EffectComposer = EffectComposer
-window.RenderPass = RenderPass
 
 THREE.loadTexture = name => {
   return new THREE.TextureLoader().load(

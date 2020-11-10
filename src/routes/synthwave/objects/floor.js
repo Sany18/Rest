@@ -11,10 +11,11 @@ export default scene => {
   texture.wrapT = THREE.RepeatWrapping
   texture.repeat.set(state.repeatTexture, state.repeatTexture)
 
-  const material = new THREE.MeshPhongMaterial({ map: texture })
+  const material = new THREE.MeshStandardMaterial({ map: texture })
   const geometry = new THREE.PlaneGeometry(state.size, state.size)
 
   const plane = new THREE.Mesh(geometry, material)
+  plane.receiveShadow = true
   plane.rotation.x = -Math.PI / 2
   plane.position.set(0, 0, 20)
 

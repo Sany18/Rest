@@ -7,9 +7,6 @@ const clock = new THREE.Clock()
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
 
-window.scene = scene // dev
-window.camera = camera // dev
-
 /* prysics */
 const world = scene.world = new OIMO.World({ 
   timestep: 1 / 60,
@@ -34,10 +31,6 @@ renderer.shadowMapDarkness = .5
 renderer.shadowMapWidth = 1024
 renderer.shadowMapHeight = 1024
 document.body.appendChild(renderer.domElement)
-
-const composer = new EffectComposer(renderer)
-const pass = new RenderPass(scene, camera)
-composer.addPass(pass)
 
 /* global listeners */
 window.addEventListener('resize', () => {
@@ -84,6 +77,6 @@ const action = () => {
 const animate = (time, delta = clock.getDelta()) => {
   world.step()
   action()
-  composer.render(delta)
+  renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }; animate()

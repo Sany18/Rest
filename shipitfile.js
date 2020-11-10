@@ -27,7 +27,7 @@ module.exports = shipit => {
   })
 
   shipit.blTask('server:start', async () => {
-    await shipit.remote(`killall -9 node && cd ${shipit.config.deployTo}/current && npm start`)
+    await shipit.remote(`killall -9 node -q ; cd ${shipit.config.deployTo}/current && npm run build`)
   })
 
   shipit.on('updated', () => {

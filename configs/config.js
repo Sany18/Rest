@@ -1,5 +1,5 @@
 const config = {
-  serverPort: process.env.PORT || 3000
+  serverPort: +process.env.PORT || 3000
 }
 
 // web
@@ -10,6 +10,6 @@ try { if (window) {
 
 // node
 try { if (global) {
-  config.serverPort = process.env.PORT || config.serverPort
+  config.serverPort = +process.env.PORT || config.serverPort
   global.config = config
 }} catch {}
