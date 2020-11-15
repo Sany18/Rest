@@ -1,4 +1,4 @@
-import 'lib/livereload'
+// import 'lib/livereload'
 import 'lib/consoleIgnore'
 import 'lib/global'
 

@@ -22,19 +22,13 @@ module.exports = shipit => {
     }
   })
 
-  shipit.blTask('npm:install', async () => {
+  shipit.on('updated', async () => {
     await shipit.remote(`cd ${shipit.releasePath} && npm i ----production`)
   })
 
-  shipit.blTask('server:start', async () => {
-    await shipit.remote(`killall -9 node -q ; cd ${shipit.config.deployTo}/current && npm run build`)
-  })
-
-  shipit.on('updated', () => {
-    shipit.start('npm:install')
-  })
-
-  shipit.on('published', () => {
-    shipit.start('server:start')
+  shipit.on('published', async () => {
+    // await shipit.remote('killall -9 node -q')
+    await shipit.remote(`cd ${shipit.config.deployTo}/current && npm run build`)
+                .catch(error => console.log(error))
   })
 }
