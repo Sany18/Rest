@@ -4,12 +4,11 @@ const path = require('path')
 const http = require('http')
 const webSocketServer = require('ws').Server
 const app = new express()
+const fs = require('fs')
 
 const root = __dirname + '/dist'
 let userIdCounter = 0
-const rejectIps = new Set([
-  // '::1'
-])
+const rejectIps = getRejectIps()
 
 // show port
 console.table(global.config)
@@ -19,6 +18,10 @@ function getIp(req) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress
+}
+
+function getRejectIps() {
+  return new Set(fs.readFileSync('./ip-blacklist', 'utf8').split('\n'))
 }
 
 function logger(req) {
