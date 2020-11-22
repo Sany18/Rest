@@ -3,10 +3,12 @@ import {
   DirectionLight, Floor, FlyCameraControl, Skybox,
   Road, StreetLight, Billboard, Mp3Player
 } from './objects/index.js'
+
 import { EffectComposer } from 'lib/postprocessing/EffectComposer'
 import { RenderPass } from 'lib/postprocessing/RenderPass'
 import { FilmPass } from 'lib/postprocessing/FilmPass'
 // import { BloomPass } from 'lib/postprocessing/BloomPass'
+
 import Stats from 'lib/stats.js'
 import handleListeners from './listeners'
 
@@ -68,12 +70,13 @@ handleListeners(
 /* After initialize */
 /* objects */
 Skybox(scene)
+Floor(scene)
 Mp3Player()
 // DirectionLight(scene)
 
 let billboard = Billboard(scene, -50)
 const road = Road(scene)
-const floorTexture = Floor(scene)
+
 const updateFlyCamera = FlyCameraControl(camera, document)
 const streetLights = []
 
@@ -118,14 +121,32 @@ const updateBillboards = () => {
   billboard.position.z += state.rideSpeed
 }
 
+const updateFloor = () => {
+  scene.children.forEach(object => {
+    if (object.name == 'floor') {
+      object.position.z += state.rideSpeed
+
+      if (object.position.z == 100) {
+        let newObject = object.clone()
+            newObject.position.z = -300
+        scene.add(newObject)
+      }
+
+      if (object.position.z > 350) {
+        scene.remove(object)
+      }
+    }
+  })
+}
+
 /* action */
 const action = (time, delta) => {
   stats.showFps()
   updateFlyCamera(delta)
   updateBillboards()
   updateStreenLights()
+  updateFloor()
 
-  floorTexture.offset.y += state.rideSpeed
   road.offset.y += state.rideSpeed
 }
 
