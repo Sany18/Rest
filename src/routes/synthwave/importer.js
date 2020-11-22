@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 import * as OIMO from 'oimo'
+import './template'
+import 'assets/synthwave.scss'
 
 window.THREE = THREE
 window.OIMO = OIMO

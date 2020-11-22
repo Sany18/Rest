@@ -13,7 +13,8 @@ export default (camera, iframeDocument)  => {
     moveSpeed: 10
   }
 
-  iframeDocument.addEventListener('click', () => iframeDocument.body.requestPointerLock())
+  iframeDocument.getElementById('renderer')
+                .addEventListener('click', () => iframeDocument.body.requestPointerLock())
   iframeDocument.addEventListener('mousemove', event => {
     if (!iframeDocument.pointerLockElement) return
 

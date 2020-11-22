@@ -1,0 +1,14 @@
+#menu {
+  position: fixed;
+  left: 0;
+  width: 200px;
+  margin-left: -200px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .5);
+  transition: .3s;
+
+  &.show {
+    margin-left: 0px;
+    transition: .3s;
+  }
+}
