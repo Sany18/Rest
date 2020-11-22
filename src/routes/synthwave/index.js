@@ -1,7 +1,7 @@
 import './importer'
 import {
   DirectionLight, Floor, FlyCameraControl, Skybox,
-  Road, StreetLight, Billboard
+  Road, StreetLight, Billboard, Mp3Player
 } from './objects/index.js'
 import { EffectComposer } from 'lib/postprocessing/EffectComposer'
 import { RenderPass } from 'lib/postprocessing/RenderPass'
@@ -68,6 +68,7 @@ handleListeners(
 /* After initialize */
 /* objects */
 Skybox(scene)
+Mp3Player()
 // DirectionLight(scene)
 
 let billboard = Billboard(scene, -50)

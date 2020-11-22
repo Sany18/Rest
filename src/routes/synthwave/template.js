@@ -1,4 +1,8 @@
 const template = `
+  <div class="player-wrapper">
+    <audio id="player" controls></audio>
+  </div>
+
   <div id="menu">
     <div class="item">
       <input type="checkbox" name="hideFps">
