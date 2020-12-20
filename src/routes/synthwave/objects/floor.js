@@ -1,24 +1,20 @@
-import { GLTFLoader } from 'lib/loaders/GLTFLoader'
+import MeshTexture from 'assets/textures/mesh.png'
 
 export default scene => {
-  // const material = new THREE.MeshStandardMaterial()
-  const glTFLoader = new GLTFLoader()
-  let plane = { offset: { y: 0 } }
+  const texture = new THREE.TextureLoader().load(MeshTexture)
+  const geometry = new THREE.PlaneGeometry(40, 50)
+  const material = new THREE.MeshBasicMaterial({ map: texture })
+  const plane = new THREE.Mesh(geometry, material)
 
-  glTFLoader.load('textures/models/scene.gltf', model => {
-    plane = model.scene
+  texture.minFilter = THREE.LinearFilter
+  texture.magFilter = THREE.NearestFilter
+  texture.wrapS = THREE.RepeatWrapping 
+  texture.wrapT = THREE.RepeatWrapping
+  texture.repeat.set(80, 100)
 
-    // plane.traverse(child => {
-    //   if (child instanceof THREE.Mesh) {
-    //     child.material.receiveShadow = true
-    //   }
-    // })
-
-    plane.name = 'floor'
-    plane.receiveShadow = true
-    plane.position.set(0, -.4, 0)
-    plane.scale.x = plane.scale.y = plane.scale.x = .5
-
-    scene.add(plane)
-  })
+  plane.position.y = -0.01
+  plane.position.z = -25
+  plane.rotation.x = -Math.PI / 2
+  scene.add(plane)
+  return texture
 }

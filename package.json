@@ -13,7 +13,7 @@
     "deploy": "npx shipit production deploy"
   },
   "keywords": [],
-  "author": "Hoxz | alex.t@miltestep.io",
+  "author": "Hoxz | parubok.sashko@gmail.com",
   "license": "ISC",
   "description": "",
   "dependencies": {

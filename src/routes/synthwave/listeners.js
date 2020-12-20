@@ -1,12 +1,13 @@
 export default function listeners(
   camera, renderer, composer,
-  filmPass, stats
+  filmPass, stats, anaglyphEffect
 ) {
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight
     camera.updateProjectionMatrix()
     renderer.setSize(window.innerWidth, window.innerHeight)
     composer.setSize(window.innerWidth, window.innerHeight)
+    anaglyphEffect.setSize(window.innerWidth, window.innerHeight)
   }, false)
 
   window.addEventListener('keydown', e => {

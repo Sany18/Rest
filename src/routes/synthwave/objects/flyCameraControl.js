@@ -10,7 +10,7 @@ export default (camera, iframeDocument)  => {
   let euler = new THREE.Euler(0, 0, 0, 'YXZ')
   let direction = new THREE.Vector3(0, 0, 0)
   let config = {
-    moveSpeed: 10
+    moveSpeed: 100
   }
 
   iframeDocument.getElementById('renderer')

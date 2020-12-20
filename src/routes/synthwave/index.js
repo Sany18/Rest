@@ -3,11 +3,12 @@ import {
   DirectionLight, Floor, FlyCameraControl, Skybox,
   Road, StreetLight, Billboard, Mp3Player
 } from './objects/index.js'
+import Mountain from './objects/mountains/mountain1'
 
 import { EffectComposer } from 'lib/postprocessing/EffectComposer'
 import { RenderPass } from 'lib/postprocessing/RenderPass'
 import { FilmPass } from 'lib/postprocessing/FilmPass'
-// import { BloomPass } from 'lib/postprocessing/BloomPass'
+import { AnaglyphEffect } from 'lib/effects/AnaglyphEffect'
 
 import Stats from 'lib/stats.js'
 import handleListeners from './listeners'
@@ -17,7 +18,7 @@ const clock = new THREE.Clock()
 const stats = new Stats()
 const state = {
   camera: { angle: 75, far: 5000, near: .1 },
-  rideSpeed: .05,
+  rideSpeed: 4.2,
   renderer: { antialias: false },
   pixelRatio: 1
 }
@@ -47,12 +48,6 @@ renderer.domElement.id = 'renderer'
 document.body.appendChild(renderer.domElement)
 
 /* filters / shaders */
-EffectComposer.prototype.removePass = function(targetPass) {
-  this.passes = this.passes.filter(pass => {
-    return pass.constructor.name != targetPass.constructor.name
-  })
-}
-
 const composer = new EffectComposer(renderer)
 const renderPass = new RenderPass(scene, camera)
 // const bloomPass = new BloomPass()
@@ -61,53 +56,72 @@ const filmPass = new FilmPass(0.2, 0.2, 648, false)
 composer.addPass(renderPass)
 composer.addPass(filmPass)
 
+const anaglyphEffect = new AnaglyphEffect(renderer)
+      anaglyphEffect.setSize(window.innerWidth, window.innerHeight)
+
 /* global. listeners */
 handleListeners(
-  camera, renderer, composer, filmPass,
-  stats
+  camera, renderer, composer,
+  filmPass, stats, anaglyphEffect
 )
 
 /* After initialize */
 /* objects */
-Skybox(scene)
-Floor(scene)
+Skybox(scene, renderer)
 Mp3Player()
 // DirectionLight(scene)
+let mountains = []
+for (let i = 0; i < 6; i++) {
+  let mountainL = Mountain()
+  let mountainR = Mountain()
+  mountainL.position.z = (-i * 10) - 5
+  mountainL.position.x = -Math.randInt(7, 12)
+  mountainR.position.z = (-i * 10) - 5
+  mountainR.position.x = Math.randInt(7, 12)
 
-let billboard = Billboard(scene, -50)
-const road = Road(scene)
-
-const updateFlyCamera = FlyCameraControl(camera, document)
-const streetLights = []
-
-scene.fog = new THREE.Fog(0x000000, .1, 100)
-
-for(let i = 0; i < 13; i++) {
-  // add every z: 10
-  streetLights.push(StreetLight(scene, (i * -10) + 15))
+  scene.add(mountainL)
+  scene.add(mountainR)
+  mountains.push(mountainL)
+  mountains.push(mountainR)
 }
 
-/* analyser */
-// let analyser, dataArray = null
-// const getAudioCtx = (stream, type = 'stream') => {
-//   const audioCtx = new AudioContext()
-//   const source = type == 'stream'
-//     ? audioCtx.createMediaStreamSource(stream)
-//     : audioCtx.createMediaElementSource(stream)
+const updateMountains = delta => {
+  for (let i = 0; i < mountains.length; i++) {
+    mountains[i].position.z += state.rideSpeed * delta
 
-//   analyser = audioCtx.createAnalyser()
-//   source.connect(analyser)
-//   analyser.fftSize = 64
+    if (mountains[i].position.z > 5) {
+      let newMountain = Mountain(scene)
+      newMountain.position.x = mountains[i].position.x
+      newMountain.position.z = -50
 
-//   dataArray = new Uint8Array(analyser.frequencyBinCount)
-// }
+      scene.remove(mountains[i])
+      mountains.splice(i, 1)
 
-const updateStreenLights = () => {
+      scene.add(newMountain)
+      mountains.push(newMountain)
+    }
+  }
+}
+
+let billboard = Billboard(scene, -50)
+const floorTexture = Floor(scene)
+const roadTexture = Road(scene)
+
+const updateFlyCamera = FlyCameraControl(camera, document)
+
+scene.fog = new THREE.Fog(0x000000, .1, 50)
+
+const streetLights = []
+for (let i = 0; i < 6; i++) {
+  streetLights.push(StreetLight(scene, (i * -10) + 10))
+}
+
+const updateStreenLights = delta => {
   for (let i = 0; i < streetLights.length; i++) {
-    streetLights[i].position.z += state.rideSpeed
+    streetLights[i].position.z += state.rideSpeed * delta
     streetLights[i].children[3].intensity = 2
 
-    if (streetLights[i].position.z > 50) {
+    if (streetLights[i].position.z > 10) {
       scene.remove(streetLights[i])
       streetLights.splice(i, 1)
       streetLights.push(StreetLight(scene, -50))
@@ -115,43 +129,27 @@ const updateStreenLights = () => {
   }
 }
 
-const updateBillboards = () => {
-  if (billboard.position.z > 50) {scene.remove(billboard); billboard = null}
+const updateBillboards = delta => {
+  if (billboard.position.z > 10) {scene.remove(billboard); billboard = null}
   if (!billboard) billboard = Billboard(scene, -50)
-  billboard.position.z += state.rideSpeed
-}
-
-const updateFloor = () => {
-  scene.children.forEach(object => {
-    if (object.name == 'floor') {
-      object.position.z += state.rideSpeed
-
-      if (object.position.z == 100) {
-        let newObject = object.clone()
-            newObject.position.z = -300
-        scene.add(newObject)
-      }
-
-      if (object.position.z > 350) {
-        scene.remove(object)
-      }
-    }
-  })
+  billboard.position.z += state.rideSpeed * delta
 }
 
 /* action */
 const action = (time, delta) => {
   stats.showFps()
   updateFlyCamera(delta)
-  updateBillboards()
-  updateStreenLights()
-  updateFloor()
+  updateBillboards(delta)
+  updateStreenLights(delta)
+  updateMountains(delta)
 
-  road.offset.y += state.rideSpeed
+  roadTexture.offset.y += state.rideSpeed * delta
+  floorTexture.offset.y += state.rideSpeed * delta * 2
 }
 
 const animate = (time, delta = clock.getDelta()) => {
   action(time, delta)
   composer.render(delta)
+  anaglyphEffect.render(scene, camera)
   requestAnimationFrame(animate)
 }; animate()
