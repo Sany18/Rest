@@ -1,13 +1,13 @@
+@import 'assets/win98theme/styles';
+
 @font-face {
   font-family: Ubuntu;
   src: url(assets/fonts/Ubuntu-R.ttf);
-  font-size: 25px;
 }
 
-html {
-  font-family: Ubuntu;
-  background: url(textures/mesh.png);
-  background-size: 100px;
+:root {
+  font-family: Ms;
+  background-color: #2b7b7b;
 }
 
 .can-move {
@@ -41,44 +41,43 @@ html {
   display: inline-block;
 }
 
-button {
-  background: #555;
-  color: white;
-  height: 30px;
-}
-
-.columns {
-  display: flex;
-  padding: 15px;
-
-  .column {
-    flex: 1;
-  }
-}
-
 .bottom-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   display: flex;
-  height: 40px;
   width: 100%;
-  background-color: grey;
+  background-color: #bdbdbd;
   justify-content: space-between;
+  border-top: solid 2px #f7f7f7;
   padding: 3px;
 
   .bottom-bar__block {
-    min-width: 34px;
-    min-height: 34px;
     display: flex;
     align-items: center;
+  }
+
+  .start-button {
+    background-image: url("./win98theme/icon/start.png");
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 5px 3px;
+    font-family: Ms-bold;
+    font-size: 14px;
+    padding-left: 24px;
+    padding-right: 2px;
+
+    &:active {
+      background-position: 5px 4px;
+      padding-left: 24px;
+      padding-right: 2px;
+    }
   }
 }
 
 .clock {
+  font-family: Ms;
   margin: 0 3px;
-  color: black;
-  font-size: .8rem;
 }
 
 .context-menu {

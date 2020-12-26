@@ -20,7 +20,8 @@ const state = {
   camera: { angle: 75, far: 5000, near: .1 },
   rideSpeed: 4.2,
   renderer: { antialias: false },
-  pixelRatio: 1
+  pixelRatio: 1,
+  anagliph: false
 }
 
 /* camera */
@@ -62,7 +63,8 @@ const anaglyphEffect = new AnaglyphEffect(renderer)
 /* global. listeners */
 handleListeners(
   camera, renderer, composer,
-  filmPass, stats, anaglyphEffect
+  filmPass, stats, anaglyphEffect,
+  state
 )
 
 /* After initialize */
@@ -149,7 +151,12 @@ const action = (time, delta) => {
 
 const animate = (time, delta = clock.getDelta()) => {
   action(time, delta)
-  composer.render(delta)
-  anaglyphEffect.render(scene, camera)
+
+  if (state.anagliph) {
+    anaglyphEffect.render(scene, camera)
+  } else {
+    composer.render(delta)
+  }
+
   requestAnimationFrame(animate)
 }; animate()

@@ -1,6 +1,6 @@
 export default class Stats {
   constructor() {
-    const style = `color: purple; position: absolute; bottom: 0; left: 0; font-size: .35cm; font-family: Arial;
+    const style = `color: orange; position: absolute; bottom: 0; left: 0; font-size: .6cm; font-family: Arial;
                    font-size: 10px;`
     const fpsEl = document.createElement('div')
           fpsEl.id = 'fps'

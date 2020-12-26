@@ -12,7 +12,10 @@ export default scene => {
   texture.minFilter = THREE.LinearFilter
   texture.repeat.set(1, state.repeatTexture)
 
-  const material = new THREE.MeshPhongMaterial({ map: texture, envMap: scene.background, combine: THREE.MixOperation, reflectivity: .1 })
+  const material = new THREE.MeshLambertMaterial({
+    map: texture,
+    shininess: 150
+  })
   const geometry = new THREE.PlaneGeometry(state.size, state.repeatTexture)
 
   const plane = new THREE.Mesh(geometry, material)

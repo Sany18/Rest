@@ -1,4 +1,7 @@
+@import 'assets/win98theme/styles';
+
 #menu {
+  font-family: Ms;
   position: fixed;
   left: 0;
   width: 200px;
@@ -6,6 +9,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, .5);
   transition: .3s;
+  color: yellow;
 
   &.show {
     margin-left: 0px;
@@ -20,9 +24,12 @@
   transform: translateX(-50%);
 
   audio {
-
     &:focus {
       outline: none;
     }
   }
+}
+
+.item {
+  margin: 3px;
 }

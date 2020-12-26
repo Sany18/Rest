@@ -1,6 +1,7 @@
 export default function listeners(
   camera, renderer, composer,
-  filmPass, stats, anaglyphEffect
+  filmPass, stats, anaglyphEffect,
+  state
 ) {
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight
@@ -17,13 +18,17 @@ export default function listeners(
     }
   })
 
-  document.getElementsByName('tvEffect')[0].addEventListener('change', e => {
+  document.getElementById('tvEffect').addEventListener('change', e => {
     filmPass.enabled = e.target.checked
   })
 
-  document.getElementsByName('hideFps')[0].addEventListener('change', e => {
+  document.getElementById('hideFps').addEventListener('change', e => {
     e.target.checked
       ? stats.fpsEl.classList.add('hide')
       : stats.fpsEl.classList.remove('hide')
+  })
+
+  document.getElementById('anaglyphEffect').addEventListener('change', e => {
+    state.anagliph = e.target.checked
   })
 }

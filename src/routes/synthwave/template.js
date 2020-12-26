@@ -5,13 +5,18 @@ const template = `
 
   <div id="menu">
     <div class="item">
-      <input type="checkbox" name="hideFps">
+      <input type="checkbox" id="hideFps">
       <label for="hideFps">Hide fps</label>
     </div>
     
     <div class="item">
-      <input type="checkbox" name="tvEffect">
+      <input type="checkbox" id="tvEffect">
       <label for="tvEffect">TV effect</label>
+    </div>
+
+    <div class="item">
+      <input type="checkbox" id="anaglyphEffect">
+      <label for="anaglyphEffect">Anaglypg effect</label>
     </div>
   </div>
 `

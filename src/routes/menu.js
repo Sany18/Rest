@@ -1,27 +1,34 @@
 import 'assets/menu.scss'
-import 'lib/moveWindow'
+import 'lib/moveElement'
 
 const template = `
-  <div class="columns">
-    <div class="column">
-      <a href="/game" class="link can-move">Game</a>
-      <a href="/synthwave" class="link can-move">Synthwave</a>
+  <div class="window moveable" style="width: 300px">
+    <div class="title-bar moveable-button">
+      <div class="title-bar-text">D:/Games</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
     </div>
-    <div class="column">
-
+    <div class="window-body">
+      <p>Go to...</p>
+      <button onclick="location.href='/game'">Game</button>
+      <button onclick="location.href='/synthwave'">Synthwave</button>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <div class="bottom-bar__block">
-      <button>Start</button>
+    <div>
+      <button class="start-button">
+        Start
+      </button>
     </div>
     <div class="bottom-bar__block">
       <div class="clock"></div>
     </div>
   </div>
 `
-
 document.write(template)
 
 const clock = () => {
