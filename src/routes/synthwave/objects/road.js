@@ -13,8 +13,7 @@ export default scene => {
   texture.repeat.set(1, state.repeatTexture)
 
   const material = new THREE.MeshLambertMaterial({
-    map: texture,
-    shininess: 150
+    map: texture
   })
   const geometry = new THREE.PlaneGeometry(state.size, state.repeatTexture)
 

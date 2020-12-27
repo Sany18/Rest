@@ -1,7 +1,7 @@
 import './importer'
 import {
   DirectionLight, Floor, FlyCameraControl, Skybox,
-  Road, StreetLight, Billboard, Mp3Player
+  Road, StreetLight, Billboard, Mp3Player, Car
 } from './objects/index.js'
 import Mountain from './objects/mountains/mountain1'
 
@@ -17,7 +17,7 @@ const scene = new THREE.Scene()
 const clock = new THREE.Clock()
 const stats = new Stats()
 const state = {
-  camera: { angle: 75, far: 5000, near: .1 },
+  camera: { angle: 75, far: 5000, near: .001 },
   rideSpeed: 4.2,
   renderer: { antialias: false },
   pixelRatio: 1,
@@ -25,11 +25,12 @@ const state = {
 }
 
 /* camera */
-let camera = new THREE.PerspectiveCamera(
+const camera = new THREE.PerspectiveCamera(
   state.camera.angle, window.innerWidth / window.innerHeight,
   state.camera.near, state.camera.far)
-camera.position.y = .5
-camera.position.z = 0
+camera.position.x = -0.079
+camera.position.y = 0.225
+camera.position.z = -0.958
 
 /* renderer */
 let renderer = new THREE.WebGLRenderer(state.renderer)
@@ -66,11 +67,12 @@ handleListeners(
   filmPass, stats, anaglyphEffect,
   state
 )
-
+// {x: -0.08, y: 0.25, z: -0.95}
 /* After initialize */
 /* objects */
 Skybox(scene, renderer)
-Mp3Player()
+// Mp3Player()
+Car(scene)
 // DirectionLight(scene)
 let mountains = []
 for (let i = 0; i < 6; i++) {

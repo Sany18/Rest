@@ -10,7 +10,7 @@ export default (camera, iframeDocument)  => {
   let euler = new THREE.Euler(0, 0, 0, 'YXZ')
   let direction = new THREE.Vector3(0, 0, 0)
   let config = {
-    moveSpeed: 100
+    moveSpeed: 0.1
   }
 
   iframeDocument.getElementById('renderer')
@@ -63,13 +63,13 @@ export default (camera, iframeDocument)  => {
     direction.y = +moveUp - +moveDown
     euler.y += (+rotationLeft - +rotationRight) * delta
 
-    if (moveForward || moveBackward) { direction.z -= direction.z * config.moveSpeed * 10 * delta }
-    if (moveLeft || moveRight)       { direction.x -= direction.x * config.moveSpeed * 10 * delta }
-    if (moveUp || moveDown)          { direction.y += direction.y * config.moveSpeed * 10 * delta }
+    if (moveForward || moveBackward) { direction.z = direction.z * config.moveSpeed * -delta }
+    if (moveLeft || moveRight)       { direction.x = direction.x * config.moveSpeed * -delta }
+    if (moveUp || moveDown)          { direction.y = direction.y * config.moveSpeed * delta }
 
-    camera.translateX(direction.x * delta)
-    camera.translateZ(direction.z * delta)
-    camera.translateY(direction.y * delta)
+    camera.translateX(direction.x)
+    camera.translateZ(direction.z)
+    camera.translateY(direction.y)
     camera.quaternion.setFromEuler(euler).normalize()
   }
 

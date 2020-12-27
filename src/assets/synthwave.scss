@@ -17,19 +17,41 @@
   }
 }
 
-.player-wrapper {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+.item {
+  margin: 3px;
+}
 
-  audio {
-    &:focus {
-      outline: none;
+.player-controll-div {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .timer {
+    margin-right: -16px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .control {
+    min-width: unset;
+    min-height: unset;
+    padding: unset;
+    width: 28px;
+    height: 28px;
+
+    &:active {
+      padding: unset;
     }
+  }
+
+  .volume {
+    width: 100px;
   }
 }
 
-.item {
-  margin: 3px;
+.player-row {
+  margin-bottom: 12px;
 }
