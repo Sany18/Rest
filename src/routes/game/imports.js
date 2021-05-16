@@ -11,6 +11,6 @@ THREE.loadTexture = name => {
     `/textures/${name}`,
     texture => {},
     xhr => console.info((xhr.loaded / xhr.total * 100) + ' % loaded'), // temporarily unavailable
-    xhr => console.info('Texture not loaded ' + name)
+    xhr => console.warn('Texture not loaded ' + name)
   )
 }

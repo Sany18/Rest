@@ -1,4 +1,5 @@
 require('./configs/config.js')
+
 const express = require('express')
 const path = require('path')
 const http = require('http')
@@ -8,7 +9,7 @@ const fs = require('fs')
 
 const root = __dirname + '/dist'
 let userIdCounter = 0
-const rejectIps = getRejectIps()
+const rejectIps = new Set(fs.readFileSync('./ip-blacklist', 'utf8').split('\n'))
 
 // show port
 console.table(global.config)
@@ -18,10 +19,6 @@ function getIp(req) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress
-}
-
-function getRejectIps() {
-  return new Set(fs.readFileSync('./ip-blacklist', 'utf8').split('\n'))
 }
 
 function logger(req) {
@@ -37,7 +34,7 @@ function logger(req) {
 app.use(express.static(root))
 app.get('*', (req, res) => {
   if (rejectIps.has(getIp(req))) return
-  logger(req)
+  if (req.method !== 'HEAD') logger(req)
   res.sendFile(path.join(root + '/index.html'))
 })
 

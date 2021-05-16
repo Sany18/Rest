@@ -48,6 +48,7 @@ module.exports = {
       patterns: [
         { from: path.join(workDir, 'public'), to: dist },
         { from: path.join(workDir, 'assets/models'), to: dist + '/models' },
+        { from: path.join(workDir, 'assets/textures'), to: dist + '/textures' }
       ],
     }),
   ]
