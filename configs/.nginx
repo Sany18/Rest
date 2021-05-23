@@ -1,6 +1,6 @@
 
 server {
-        server_name synth.gq www.synth.gq;
+        server_name oldps.tk www.oldps.tk;
 
         listen 80 default_server;
         listen [::]:80 default_server;

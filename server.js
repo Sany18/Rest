@@ -14,22 +14,6 @@ const rejectIps = new Set(fs.readFileSync('./ip-blacklist', 'utf8').split('\n'))
 // show port
 console.table(global.config)
 
-function getIp(req) {
-  return (req.headers['x-forwarded-for'] || '').split(',').pop().trim() ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    req.connection.socket.remoteAddress
-}
-
-function logger(req) {
-  console.log(
-    req.method,
-    getIp(req),
-    req.url,
-    req.query
-  )
-}
-
 /* http server */
 app.use(express.static(root))
 app.get('*', (req, res) => {
@@ -63,3 +47,19 @@ function broadcast(message) { wsServer.clients.forEach(client => client.send(wsM
 function sendMessageToCurrentUser(ws, message) { ws.send(wsMessageFormatter(message)) }
 
 /* ... */
+
+function getIp(req) {
+  return (req.headers['x-forwarded-for'] || '').split(',').pop().trim() ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress
+}
+
+function logger(req) {
+  console.log(
+    req.method,
+    getIp(req),
+    req.url,
+    req.query
+  )
+}
