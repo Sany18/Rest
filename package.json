@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm-run-all --parallel server:dev webpack:dev --silent",
-    "build": "npm-run-all --parallel server:prod webpack:prod --silent",
+    "build-start": "npm-run-all --parallel server:prod webpack:prod --silent",
     "server:dev": "nodemon server.js",
     "server:prod": "node server.js",
     "webpack:dev": "webpack --config ./configs/webpack.common.js",
