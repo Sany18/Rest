@@ -13,6 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: docker build -t rest:latest .
-    - run: docker image prune
-    - run: docker rmi $(docker images -f dangling=true -q) -f
-    - run: docker run rest:latest -p 80:3000
+    - run: docker image prune -f || true
+    - run: docker rmi $(docker images -f dangling=true -q) -f || true
+    - run: docker run -d -p 3000:3000 rest:latest
