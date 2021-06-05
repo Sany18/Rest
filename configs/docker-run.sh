@@ -1,3 +1,4 @@
-docker build -t rest:latest ..
+docker build -t xyz:latest ..
 docker rmi $(docker images -f dangling=true -q) -f || true
-docker run -d -p 3000:3000 rest:latest
+docker stop xyz-container || true
+docker run -d --name xyz-container -p 80:3000 xyz:latest
