@@ -15,4 +15,4 @@ jobs:
     - run: docker build -t rest:latest .
     - run: docker image prune -f || true
     - run: docker rmi $(docker images -f dangling=true -q) -f || true
-    - run: docker run -d -p 3000:3000 rest:latest
+    - run: docker run -d -p 80:3000 rest:latest
