@@ -18,6 +18,20 @@ const template = `
     </div>
   </div>
 
+  <div class="window moveable" style="width: 130px">
+    <div class="title-bar moveable-button">
+      <div class="title-bar-text">D:/CPP</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <button onclick="location.href='/wasm'">First wasm</button>
+    </div>
+  </div>
+
   <div class="bottom-bar">
     <div>
       <button class="start-button">
